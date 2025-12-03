@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify
 from db import db
 from models.wizards import Wizards
+from models.magical_schools import MagicalSchools
+from models.wizard_specializations import WizardSpecializations
 import uuid
 
 wizards_bp = Blueprint("wizards", __name__)
@@ -45,18 +47,41 @@ def add_wizard():
 @wizards_bp.route("/wizards", methods=["GET"])
 def get_all_wizards():
     wizards = Wizards.query.all()
-    if not wizards:
-        return jsonify({"message": "No wizards found"}), 404
+    result = []
+    for w in wizards:
+        school = MagicalSchools.query.filter_by(school_id=w.school_id).first()
+        spells = WizardSpecializations.query.filter_by(wizard_id=w.wizard_id).all()
 
-    result = [{
-        "wizard_id": w.wizard_id,
-        "wizard_name": w.wizard_name,
-        "house": w.house,
-        "year_enrolled": w.year_enrolled,
-        "magical_power_level": w.magical_power_level,
-        "active": w.active,
-        "school_id": w.school_id
-    } for w in wizards]
+        school_dict = None
+        if school:
+            school_dict = {
+                "school_id": school.school_id,
+                "school_name": school.school_name,
+                "location": school.location,
+                "founded_year": school.founded_year,
+                "headmaster": school.headmaster
+            }
+
+        spell_dict = None
+        if spells:
+            spell_dict = {
+                "spell_id": spells.spell_id,
+                "proficiency_level": spells.proficiency_level,
+                "date_learned": spells.date_learned
+            }
+
+
+        result.append({
+            "wizard_id": w.wizard_id,
+            "wizard_name": w.wizard_name,
+            "house": w.house,
+            "year_enrolled": w.year_enrolled,
+            "magical_power_level": w.magical_power_level,
+            "active": w.active,
+            "school": school_dict,
+            "spells": spell_dict
+        })
+
 
     return jsonify({"results": result}), 200
 

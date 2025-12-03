@@ -11,5 +11,13 @@ class Wizards(db.Model):
     year_enrolled = db.Column(db.Integer)
     magical_power_level = db.Column(db.Integer, default=0)
     active = db.Column(db.Boolean, default=True)
-
     specializations = db.relationship("WizardSpecializations", backref="wizard", cascade="all, delete-orphan")
+
+def __init__(self, school_id, wizard_name, house, year_enrolled, magical_power_level, active, specializtions):
+    self.school_id = school_id
+    self.wizard_name = wizard_name
+    self.house = house
+    self.year_enrolled = year_enrolled
+    self.magical_power_level = magical_power_level
+    self.active = active
+    self.specialization = specializtions

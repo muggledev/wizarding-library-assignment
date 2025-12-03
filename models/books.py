@@ -12,3 +12,12 @@ class Books(db.Model):
     rarity_level = db.Column(db.Integer)
     magical_properties = db.Column(db.String(255))
     available = db.Column(db.Boolean, default=True)
+
+def __init__(self, school_id, title, author, subject, rarity_level, magical_properties, available):
+    self.school_id = school_id
+    self.title = title
+    self.author = author
+    self.subject = subject
+    self.rarity_level = rarity_level
+    self.magical_properties = magical_properties
+    self.available = available

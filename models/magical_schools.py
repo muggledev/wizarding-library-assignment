@@ -12,3 +12,9 @@ class MagicalSchools(db.Model):
 
     wizards = db.relationship("Wizards", backref="school", cascade="all, delete-orphan")
     books = db.relationship("Books", backref="school", cascade="all, delete-orphan")
+
+def __init__(self, school_name, location, founded_year, headmaster):
+    self.school_name =school_name
+    self.location = location
+    self.founded_year = founded_year
+    self.headmaster = headmaster

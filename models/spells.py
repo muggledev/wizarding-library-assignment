@@ -12,3 +12,10 @@ class Spells(db.Model):
     description = db.Column(db.String(255))
 
     wizard_specializations = db.relationship("WizardSpecializations", backref="spell", cascade="all, delete-orphan")
+
+def __init__(self, spell_name, incantation, difficulty_level, spell_type, description):
+    self.spell_name = spell_name
+    self.incantation = incantation
+    self.difficulty_level = difficulty_level
+    self.spell_type = spell_type
+    self.description = description
